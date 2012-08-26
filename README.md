@@ -2,6 +2,8 @@
 
 HMAC authentication module for NodeJS.
 
+[![Build Status](https://secure.travis-ci.org/wolfeidua/ofuda.png)](http://travis-ci.org/wolfeidau/ofuda)
+
 ## Getting Started
 Install the module with: `npm install ofuda`
 
