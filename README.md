@@ -1,13 +1,14 @@
 # ofuda
 
-HMAC authentication for nodejs.
+HMAC authentication module for NodeJS.
 
 ## Getting Started
 Install the module with: `npm install ofuda`
 
 ```javascript
 var ofuda = require('ofuda');
-ofuda.awesome(); // "awesome"
+
+ofuda.signRequest(request, key, secret); // appends an sha-hmac signature to the request
 ```
 
 ## Documentation
