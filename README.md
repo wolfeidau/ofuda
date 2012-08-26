@@ -8,7 +8,7 @@ Install the module with: `npm install ofuda`
 ```javascript
 var ofuda = require('ofuda');
 
-ofuda.signRequest(request, key, secret); // appends an sha-hmac signature to the request
+ofuda.signRequest(request, key, secret); // appends a sha-hmac signature to the request
 ```
 
 ## Documentation
