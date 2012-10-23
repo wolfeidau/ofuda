@@ -51,4 +51,6 @@ module.exports = function (grunt) {
     // Default task.
     grunt.registerTask('default', 'simplemocha');
 
+    // override the default test target
+    grunt.registerTask('test', 'simplemocha');
 };
