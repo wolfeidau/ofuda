@@ -34,12 +34,11 @@ module.exports = function (grunt) {
         },
         simplemocha: {
             all: {
-                src: 'spec/**/*.js',
+                src: 'test/**/*.js',
                 options: {
                     globals: ['should'],
                     timeout: 3000,
                     ignoreLeaks: false,
-                    //grep: '*_test',
                     ui: 'bdd',
                     reporter: 'spec'
                 }
