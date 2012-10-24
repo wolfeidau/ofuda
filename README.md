@@ -8,9 +8,11 @@ HMAC authentication module for NodeJS.
 Install the module with: `npm install ofuda`
 
 ```javascript
-var ofuda = require('ofuda');
+Ofuda = require('ofuda');
 
-ofuda.signRequest(request, key, secret); // appends a sha-hmac signature to the request
+var ofuda = new Ofuda({headerPrefix:'Amz', hash: 'sha1', serviceLabel: 'AWS', accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV'});
+
+ofuda.signHttpRequest(request); // appends a hmac authorisation header to the request
 ```
 
 ## Documentation
@@ -22,8 +24,7 @@ _(Coming soon)_
 var http = require('http');
 var ofuda = require('ofuda');
 
-var key = 'key';
-var secret = 'secret'; 
+var ofuda = new Ofuda({headerPrefix:'Amz', hash: 'sha1', serviceLabel: 'AWS', accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV'});
 
 http_options = {
   host: 'localhost',
@@ -35,7 +36,7 @@ http_options = {
   }
 };
 
-ofuda.signRequest(http_options, key, secret);
+ofuda.signRequest(http_options);
 
 var req = http.request(http_options, function(res) {
     console.log('STATUS: ' + res.statusCode);
@@ -47,7 +48,7 @@ req.end();
 ```
 
 ## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](https://github.com/cowboy/grunt).
+In lieu of a formal style guide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](https://github.com/cowboy/grunt).
 
 ## Release History
 _(Nothing yet)_
