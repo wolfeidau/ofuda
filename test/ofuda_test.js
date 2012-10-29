@@ -1,14 +1,11 @@
 var should = require('should'),
     Ofuda = require('../lib/ofuda.js');
 
-
-
-
 var put_request = {
     method:'PUT',
     path:'/quotes/nelson',
     headers:{
-        'Content-Md5':'c8fdb181845a4ca6b8fec737b3581d76',
+        'Content-MD5':'c8fdb181845a4ca6b8fec737b3581d76',
         'Content-Type':'text/html',
         'Date':'Thu, 17 Nov 2005 18:49:58 GMT',
         'X-Amz-Meta-Author':'foo@bar.com',
