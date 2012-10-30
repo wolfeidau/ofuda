@@ -76,5 +76,18 @@ describe('ofuda client', function () {
             ofuda.signHttpRequest(put_request).headers
                 .should.have.property('Authorization', 'AWS 44CF9590006BF252F707:jZNOcbfWmD/A/f3hSvVzXZjM2HU=')
         });
+
+        it('should invoke callback when passed to sign request', function(){
+            var ofuda = new Ofuda({headerPrefix:'Amz', hash: 'sha1', serviceLabel: 'AWS', accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV'});
+
+            ofuda.signHttpRequest(put_request, function(request){
+
+                return [request.headers['Content-Type'],'',
+                    request.headers['Date'],request.path].join('\n');
+
+            }).headers
+                .should.have.property('Authorization', 'AWS 44CF9590006BF252F707:65YvMOUL28EjZg00fMoZ+YaEOPM=')
+
+        });
     });
 });
