@@ -22,7 +22,7 @@ describe('ofuda client', function () {
     var ofuda;
 
     before(function () {
-        ofuda = new Ofuda();
+        ofuda = new Ofuda({accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV'});
     });
 
     describe('options', function (done) {
@@ -50,7 +50,7 @@ describe('ofuda client', function () {
 
         it('should match two x- headers in request', function () {
 
-            ofuda = new Ofuda({headerPrefix:'Amz'});
+            ofuda = new Ofuda({accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV', headerPrefix:'Amz'});
 
             ofuda._locateHeadersByPrefix(put_request)
                 .should.eql([ 'X-Amz-Meta-Author', 'X-Amz-Magic' ]);
