@@ -1,7 +1,8 @@
 var should = require('should'),
+    _ = require('lodash'),
     Ofuda = require('../lib/ofuda.js');
 
-var put_request = {
+var putRequest = {
     method:'PUT',
     path:'/quotes/nelson',
     headers:{
@@ -13,19 +14,35 @@ var put_request = {
     }
 };
 
+var signedPutRequest = {
+    method:'PUT',
+    path:'/quotes/nelson',
+    headers:{
+        'Content-MD5':'c8fdb181845a4ca6b8fec737b3581d76',
+        'Content-Type':'text/html',
+        'Date':'Thu, 17 Nov 2005 18:49:58 GMT',
+        'X-Amz-Meta-Author':'foo@bar.com',
+        'X-Amz-Magic':'abracadabra',
+        'Authorization': 'AWS 44CF9590006BF252F707:jZNOcbfWmD/A/f3hSvVzXZjM2HU='
+    }
+};
+
 var putCanonicalString = "PUT\nc8fdb181845a4ca6b8fec737b3581d76\ntext/html\nThu, 17 Nov 2005 18:49:58 GMT\nx-amz-magic:abracadabra\nx-amz-meta-author:foo@bar.com\n/quotes/nelson";
 
 var secret = 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV';
+
+var credentials = {accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV'};
 
 describe('ofuda client', function () {
 
     var ofuda;
 
+
     before(function () {
-        ofuda = new Ofuda({accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV'});
+        ofuda = new Ofuda();
     });
 
-    describe('options', function (done) {
+    describe('options', function () {
 
         it('should have default options when not supplied', function () {
 
@@ -35,11 +52,9 @@ describe('ofuda client', function () {
 
         it('should accept and apply options', function () {
 
-            var ofuda = new Ofuda({headerPrefix:'Amz', hash: 'sha256', accessKeyId: '1234', accessKeySecret: '5678'});
+            var ofuda = new Ofuda({headerPrefix:'Amz', hash: 'sha256'});
             ofuda.options.should.have.property('headerPrefix', 'Amz');
             ofuda.options.should.have.property('hash', 'sha256');
-            ofuda.options.should.have.property('accessKeyId', '1234');
-            ofuda.options.should.have.property('accessKeySecret', '5678');
 
         });
 
@@ -50,9 +65,9 @@ describe('ofuda client', function () {
 
         it('should match two x- headers in request', function () {
 
-            ofuda = new Ofuda({accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV', headerPrefix:'Amz'});
+            ofuda = new Ofuda({headerPrefix:'Amz'});
 
-            ofuda._locateHeadersByPrefix(put_request)
+            ofuda._locateHeadersByPrefix(putRequest)
                 .should.eql([ 'X-Amz-Meta-Author', 'X-Amz-Magic' ]);
         });
 
@@ -60,27 +75,29 @@ describe('ofuda client', function () {
 
             ofuda.headerPrefix('Amz');
 
-            ofuda._buildCanonicalStringFromRequest(put_request)
+            ofuda._buildCanonicalStringFromRequest(putRequest)
                 .should.eql(putCanonicalString);
         });
 
         it('should generate a matching signature for the given string', function(){
-            ofuda.headerPrefix('Amz');
-            ofuda.accessKeySecret('OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV');
-            ofuda._generateHMACSignature(putCanonicalString).should.eql('jZNOcbfWmD/A/f3hSvVzXZjM2HU=');
+
+            ofuda = new Ofuda({headerPrefix:'Amz', debug: true});
+
+            // accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV',
+            ofuda._generateHMACSignature(credentials, putCanonicalString).should.eql('jZNOcbfWmD/A/f3hSvVzXZjM2HU=');
         });
 
         it('should successfully sign a request', function(){
-            var ofuda = new Ofuda({headerPrefix:'Amz', hash: 'sha1', serviceLabel: 'AWS', accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV'});
+            var ofuda = new Ofuda({headerPrefix:'Amz', hash: 'sha1', serviceLabel: 'AWS'});
 
-            ofuda.signHttpRequest(put_request).headers
+            ofuda.signHttpRequest(credentials, putRequest).headers
                 .should.have.property('Authorization', 'AWS 44CF9590006BF252F707:jZNOcbfWmD/A/f3hSvVzXZjM2HU=')
         });
 
         it('should invoke callback when passed to sign request', function(){
-            var ofuda = new Ofuda({headerPrefix:'Amz', hash: 'sha1', serviceLabel: 'AWS', accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV'});
+            var ofuda = new Ofuda({headerPrefix:'Amz', hash: 'sha1', serviceLabel: 'AWS'});
 
-            ofuda.signHttpRequest(put_request, function(request){
+            ofuda.signHttpRequest(credentials, putRequest, function(request){
 
                 return [request.headers['Content-Type'],'',
                     request.headers['Date'],request.path].join('\n');
@@ -88,6 +105,12 @@ describe('ofuda client', function () {
             }).headers
                 .should.have.property('Authorization', 'AWS 44CF9590006BF252F707:65YvMOUL28EjZg00fMoZ+YaEOPM=')
 
+        });
+
+        it('should validate the signature of a request', function(){
+            ofuda.validateHttpRequest(signedPutRequest, function(accessKeyId){
+                return credentials;
+            }).should.eql(true);
         });
     });
 });

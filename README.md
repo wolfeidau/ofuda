@@ -24,7 +24,9 @@ _(Coming soon)_
 var http = require('http');
 var ofuda = require('ofuda');
 
-var ofuda = new Ofuda({headerPrefix:'Amz', hash: 'sha1', serviceLabel: 'AWS', accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV'});
+var ofuda = new Ofuda({headerPrefix:'Amz', hash: 'sha1', serviceLabel: 'AWS'});
+
+var credentials = {accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV'};
 
 http_options = {
   host: 'localhost',
@@ -36,7 +38,7 @@ http_options = {
   }
 };
 
-ofuda.signRequest(http_options);
+ofuda.signRequest(credentials, http_options);
 
 var req = http.request(http_options, function(res) {
     console.log('STATUS: ' + res.statusCode);
