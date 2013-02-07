@@ -1,7 +1,7 @@
 {
     "name": "ofuda",
     "description": "HMAC authentication for nodejs which should be compatible with Amazon.",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "homepage": "https://github.com/wolfeidau/ofuda",
     "author": {
         "name": "Mark Wolfe",
