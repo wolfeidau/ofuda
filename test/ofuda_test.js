@@ -27,6 +27,16 @@ var signedPutRequest = {
     }
 };
 
+var unsignedPutRequest = {
+    method:'PUT',
+    path:'/quotes/nelson',
+    headers:{
+        'Content-MD5':'c8fdb181845a4ca6b8fec737b3581d76',
+        'Content-Type':'text/html',
+        'Date':'Thu, 17 Nov 2005 18:49:58 GMT'
+    }
+};
+
 var putCanonicalString = "PUT\nc8fdb181845a4ca6b8fec737b3581d76\ntext/html\nThu, 17 Nov 2005 18:49:58 GMT\nx-amz-magic:abracadabra\nx-amz-meta-author:foo@bar.com\n/quotes/nelson";
 
 var secret = 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV';
@@ -91,7 +101,7 @@ describe('ofuda client', function () {
             var ofuda = new Ofuda({headerPrefix:'Amz', hash: 'sha1', serviceLabel: 'AWS'});
 
             ofuda.signHttpRequest(credentials, putRequest).headers
-                .should.have.property('Authorization', 'AWS 44CF9590006BF252F707:jZNOcbfWmD/A/f3hSvVzXZjM2HU=')
+                .should.have.property('Authorization', 'AWS 44CF9590006BF252F707:jZNOcbfWmD/A/f3hSvVzXZjM2HU=');
         });
 
         it('should invoke callback when passed to sign request', function(){
@@ -103,7 +113,7 @@ describe('ofuda client', function () {
                     request.headers['Date'],request.path].join('\n');
 
             }).headers
-                .should.have.property('Authorization', 'AWS 44CF9590006BF252F707:65YvMOUL28EjZg00fMoZ+YaEOPM=')
+                .should.have.property('Authorization', 'AWS 44CF9590006BF252F707:65YvMOUL28EjZg00fMoZ+YaEOPM=');
 
         });
 
@@ -111,6 +121,23 @@ describe('ofuda client', function () {
             ofuda.validateHttpRequest(signedPutRequest, function(accessKeyId){
                 return credentials;
             }).should.eql(true);
+        });
+
+        it('should not bomb out if the Authorisation header is missing', function(){
+            ofuda.validateHttpRequest(unsignedPutRequest, function(accessKeyId){
+                return credentials;
+            }).should.eql(false);
+        });
+
+        it('should not bomb out with bad Authorisation header', function(){
+
+            var badPutRequest = unsignedPutRequest;
+
+            badPutRequest.headers['Authorization'] = 'SomeJunk';
+
+            ofuda.validateHttpRequest(unsignedPutRequest, function(accessKeyId){
+                return credentials;
+            }).should.eql(false);
         });
     });
 });

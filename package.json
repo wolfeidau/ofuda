@@ -1,41 +1,42 @@
 {
-  "name": "ofuda",
-  "description": "HMAC authentication for nodejs which should be compatible with Amazon.",
-  "version": "0.3.0",
-  "homepage": "https://github.com/wolfeidau/ofuda",
-  "author": {
-    "name": "Mark Wolfe",
-    "email": "mark@wolfe.id.au",
-    "url": "http://wolfe.id.au"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/wolfeidau/ofuda.git"
-  },
-  "bugs": {
-    "url": "https://github.com/wolfeidau/ofuda/issues"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/wolfeidau/ofuda/blob/master/LICENSE-MIT"
-    }
-  ],
-  "main": "lib/ofuda",
-  "engines": {
-    "node": ">= 0.6.0"
-  },
-  "scripts": {
-    "test": "grunt test"
-  },
-  "dependencies": {
-    "lodash": "~0.8.2"
-  },
-  "devDependencies": {
-    "grunt": "~0.3.12",
-    "grunt-simple-mocha": "~0.2.0",
-    "mocha": "~1.6.0",
-    "should": "~1.2.0"
-  },
-  "keywords": []
+    "name": "ofuda",
+    "description": "HMAC authentication for nodejs which should be compatible with Amazon.",
+    "version": "0.3.0",
+    "homepage": "https://github.com/wolfeidau/ofuda",
+    "author": {
+        "name": "Mark Wolfe",
+        "email": "mark@wolfe.id.au",
+        "url": "http://wolfe.id.au"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/wolfeidau/ofuda.git"
+    },
+    "bugs": {
+        "url": "https://github.com/wolfeidau/ofuda/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/wolfeidau/ofuda/blob/master/LICENSE-MIT"
+        }
+    ],
+    "main": "lib/ofuda",
+    "engines": {
+        "node": ">= 0.6.0"
+    },
+    "scripts": {
+        "test": "grunt test"
+    },
+    "dependencies": {
+        "lodash": "~0.8.2",
+        "cryptiles": "~0.0.1"
+    },
+    "devDependencies": {
+        "grunt": "~0.3.12",
+        "grunt-simple-mocha": "~0.2.0",
+        "mocha": "~1.6.0",
+        "should": "~1.2.0"
+    },
+    "keywords": []
 }
