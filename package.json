@@ -36,7 +36,9 @@
         "grunt": "~0.3.12",
         "grunt-simple-mocha": "~0.2.0",
         "mocha": "~1.6.0",
-        "should": "~1.2.0"
+        "should": "~1.2.0",
+        "express": "3.x",
+        "superagent": "0.12.x"
     },
     "keywords": []
 }
