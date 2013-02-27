@@ -1,5 +1,6 @@
 var should = require('should'),
     _ = require('lodash'),
+    assert = require('assert'),
     Ofuda = require('../lib/ofuda.js');
 
 var putRequest = {
@@ -117,10 +118,36 @@ describe('ofuda client', function () {
 
         });
 
-        it('should validate the signature of a request', function(){
+        it('should provide backwards compatability to sync validate', function(){
             ofuda.validateHttpRequest(signedPutRequest, function(accessKeyId){
                 return credentials;
             }).should.eql(true);
+        });
+
+        it('should validate the signature of a request', function(){
+            ofuda.validateHttpRequestSync(signedPutRequest, function(accessKeyId){
+                return credentials;
+            }).should.eql(true);
+        });
+
+        it('should validate async and provide credentials async', function(done){
+            ofuda.validateHttpRequest(signedPutRequest, function(accessKeyId, callback){
+                process.nextTick(function() {
+                    callback(credentials);
+                });
+            }, function(valid) {
+                if (true !== valid) throw new Error('Not true');
+                done();
+            });
+        });
+
+        it('should validate async and provide credentials sync', function(done){
+            ofuda.validateHttpRequest(signedPutRequest, function(accessKeyId){
+                return credentials;
+            }, function(valid) {
+                if (true !== valid) throw new Error('Not true');
+                done();
+            });
         });
 
         it('should not bomb out if the Authorisation header is missing', function(){
