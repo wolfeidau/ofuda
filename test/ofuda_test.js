@@ -1,6 +1,5 @@
 var should = require('should'),
     _ = require('lodash'),
-    assert = require('assert'),
     Ofuda = require('../lib/ofuda.js');
 
 var putRequest = {
@@ -69,7 +68,8 @@ describe('ofuda client', function () {
 
         });
 
-        it('should accept option nonce');
+        // TODO: implement.  commenting out to prevent 1 pending test displayed in npm test
+        // it('should accept option nonce');
     });
 
     describe('validateHeaders', function () {
@@ -148,6 +148,26 @@ describe('ofuda client', function () {
                 if (true !== valid) throw new Error('Not true');
                 done();
             });
+        });
+
+        it('should error if authCallback returns and async callbacks', function(){
+            var noop = function(){};
+            (function() {
+                ofuda.validateHttpRequest(signedPutRequest, function(accessKeyId, callback){
+                    callback(credentials);
+                    return credentials;
+                }, noop);
+            }).should.throwError('credentials callback called multiple times');
+        });
+
+        it('throws an error if async callback called multiple times', function(){
+            var noop = function(){};
+            (function() {
+                ofuda.validateHttpRequest(signedPutRequest, function(accessKeyId, callback){
+                    callback(credentials);
+                    callback(credentials);
+                }, noop);
+            }).should.throwError('credentials callback called multiple times');
         });
 
         it('should not bomb out if the Authorisation header is missing', function(){
