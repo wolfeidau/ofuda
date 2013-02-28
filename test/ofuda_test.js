@@ -68,7 +68,8 @@ describe('ofuda client', function () {
 
         });
 
-        it('should accept option nonce');
+        // TODO: implement.  commenting out to prevent 1 pending test displayed in npm test
+        // it('should accept option nonce');
     });
 
     describe('validateHeaders', function () {
@@ -117,10 +118,56 @@ describe('ofuda client', function () {
 
         });
 
-        it('should validate the signature of a request', function(){
+        it('should provide backwards compatability to sync validate', function(){
             ofuda.validateHttpRequest(signedPutRequest, function(accessKeyId){
                 return credentials;
             }).should.eql(true);
+        });
+
+        it('should validate the signature of a request', function(){
+            ofuda.validateHttpRequestSync(signedPutRequest, function(accessKeyId){
+                return credentials;
+            }).should.eql(true);
+        });
+
+        it('should validate async and provide credentials async', function(done){
+            ofuda.validateHttpRequest(signedPutRequest, function(accessKeyId, callback){
+                process.nextTick(function() {
+                    callback(credentials);
+                });
+            }, function(valid) {
+                if (true !== valid) throw new Error('Not true');
+                done();
+            });
+        });
+
+        it('should validate async and provide credentials sync', function(done){
+            ofuda.validateHttpRequest(signedPutRequest, function(accessKeyId){
+                return credentials;
+            }, function(valid) {
+                if (true !== valid) throw new Error('Not true');
+                done();
+            });
+        });
+
+        it('should error if authCallback returns and async callbacks', function(){
+            var noop = function(){};
+            (function() {
+                ofuda.validateHttpRequest(signedPutRequest, function(accessKeyId, callback){
+                    callback(credentials);
+                    return credentials;
+                }, noop);
+            }).should.throwError('credentials callback called multiple times');
+        });
+
+        it('throws an error if async callback called multiple times', function(){
+            var noop = function(){};
+            (function() {
+                ofuda.validateHttpRequest(signedPutRequest, function(accessKeyId, callback){
+                    callback(credentials);
+                    callback(credentials);
+                }, noop);
+            }).should.throwError('credentials callback called multiple times');
         });
 
         it('should not bomb out if the Authorisation header is missing', function(){
