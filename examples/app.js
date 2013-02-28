@@ -10,6 +10,7 @@ var validateCredentials = function(requestAccessKeyId){
 http.createServer(function (request, response) {
 
     if(ofuda.validateHttpRequest(request, validateCredentials)){
+        console.log(require('util').inspect(request.headers))
         response.writeHead(200);
         response.end('Success!');
     } else {

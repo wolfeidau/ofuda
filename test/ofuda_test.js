@@ -91,7 +91,7 @@ describe('ofuda client', function () {
 
         it('should generate a matching signature for the given string', function(){
 
-            ofuda = new Ofuda({headerPrefix:'Amz', debug: true});
+            ofuda = new Ofuda({headerPrefix:'Amz', debug: false});
 
             // accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV',
             ofuda._generateHMACSignature(credentials, putCanonicalString).should.eql('jZNOcbfWmD/A/f3hSvVzXZjM2HU=');

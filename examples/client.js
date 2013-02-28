@@ -13,11 +13,13 @@ http_options = {
     headers: {
         'Content-Type': 'application/json',
         'Content-MD5': 'ee930827ccb58cd846ca31af5faa3634',
-        'date': 'Thu, 07 Feb 2013 20:53:04 GMT'
+        'Date': 'Thu, 07 Feb 2013 20:53:04 GMT'
     }
 };
 
 signedOptions = ofuda.signHttpRequest(credentials, http_options);
+
+console.log(require('util').inspect(http_options.headers))
 
 var req = http.request(signedOptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
