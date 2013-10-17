@@ -1,3 +1,4 @@
+"use strict";
 var http = require('http');
 var Ofuda = require('../lib/ofuda');
 
@@ -5,7 +6,7 @@ var ofuda = new Ofuda({headerPrefix: 'Amz', hash: 'sha1', serviceLabel: 'AWS', d
 
 var credentials = {accessKeyId: '44CF9590006BF252F707', accessKeySecret: 'OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV'};
 
-http_options = {
+var http_options = {
     host: 'localhost',
     port: 8080,
     path: '/notify',
@@ -17,7 +18,7 @@ http_options = {
     }
 };
 
-signedOptions = ofuda.signHttpRequest(credentials, http_options);
+var signedOptions = ofuda.signHttpRequest(credentials, http_options);
 
 console.log(require('util').inspect(http_options.headers))
 

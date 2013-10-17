@@ -1,3 +1,4 @@
+"use strict";
 var should = require('should'),
     _ = require('lodash'),
     Ofuda = require('../lib/ofuda.js');
@@ -110,7 +111,7 @@ describe('ofuda client', function () {
             ofuda.signHttpRequest(credentials, putRequest, function(request){
 
                 return [request.headers['Content-Type'],'',
-                    request.headers['Date'],request.path].join('\n');
+                    request.headers.Date,request.path].join('\n');
 
             }).headers
                 .should.have.property('Authorization', 'AWS 44CF9590006BF252F707:65YvMOUL28EjZg00fMoZ+YaEOPM=');
@@ -133,7 +134,7 @@ describe('ofuda client', function () {
 
             var badPutRequest = unsignedPutRequest;
 
-            badPutRequest.headers['Authorization'] = 'SomeJunk';
+            badPutRequest.headers.Authorization = 'SomeJunk';
 
             ofuda.validateHttpRequest(unsignedPutRequest, function(accessKeyId){
                 return credentials;
