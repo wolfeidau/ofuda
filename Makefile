@@ -4,7 +4,7 @@ test: jshint
 	@NODE_ENV=test ./node_modules/.bin/mocha --recursive --reporter $(REPORTER) --timeout 3000
 
 jshint:
-	jshint lib examples test
+	./node_modules/.bin/jshint lib examples test
 
 tests: test
 
