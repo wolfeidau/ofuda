@@ -1,8 +1,9 @@
-# ofuda
+#  ofuda [![Build Status](https://secure.travis-ci.org/wolfeidau/ofuda.png)](http://travis-ci.org/wolfeidau/ofuda)
+
+[![NPM](https://nodei.co/npm/ofuda.png)](https://nodei.co/npm/ofuda/)
+[![NPM](https://nodei.co/npm-dl/ofuda.png)](https://nodei.co/npm/ofuda/)
 
 HMAC authentication module for NodeJS.
-
-[![Build Status](https://secure.travis-ci.org/wolfeidau/ofuda.png)](http://travis-ci.org/wolfeidau/ofuda)
 
 ## Getting Started
 Install the module with: `npm install ofuda`
@@ -16,9 +17,6 @@ ofuda.signHttpRequest(request); // appends a hmac authorisation header to the re
 ```
 
 ## Documentation
-_(Coming soon)_
-
-## Examples
 
 Use as a client is illustrated below.
 
